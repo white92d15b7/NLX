@@ -1,0 +1,29 @@
+<!DOCTYPE RCC><RCC version="1.0">
+    <qresource prefix="/translations">
+        <file alias="bg">locale/nullex_bg.qm</file>
+        <file alias="ca">locale/nullex_ca.qm</file>
+        <file alias="cs">locale/nullex_cs.qm</file>
+        <file alias="da">locale/nullex_da.qm</file>
+        <file alias="de">locale/nullex_de.qm</file>
+        <file alias="en">locale/nullex_en.qm</file>
+        <file alias="en_US">locale/nullex_en_US.qm</file>
+        <file alias="es">locale/nullex_es.qm</file>
+        <file alias="fi">locale/nullex_fi.qm</file>
+        <file alias="fr_FR">locale/nullex_fr_FR.qm</file>
+        <file alias="it">locale/nullex_it.qm</file>
+        <file alias="ja">locale/nullex_ja.qm</file>
+        <file alias="ko_KR">locale/nullex_ko_KR.qm</file>
+        <file alias="nl">locale/nullex_nl.qm</file>
+        <file alias="pl">locale/nullex_pl.qm</file>
+        <file alias="pt">locale/nullex_pt.qm</file>
+        <file alias="pt_BR">locale/nullex_pt_BR.qm</file>
+        <file alias="ro_RO">locale/nullex_ro_RO.qm</file>
+        <file alias="ru">locale/nullex_ru.qm</file>
+        <file alias="sk">locale/nullex_sk.qm</file>
+        <file alias="sv">locale/nullex_sv.qm</file>
+        <file alias="tr">locale/nullex_tr.qm</file>
+        <file alias="uk">locale/nullex_uk.qm</file>
+        <file alias="zh_CN">locale/nullex_zh_CN.qm</file>
+        <file alias="zh_TW">locale/nullex_zh_TW.qm</file>
+    </qresource>
+</RCC>
