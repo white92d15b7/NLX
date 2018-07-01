@@ -23,3 +23,7 @@ WORKDIR /mnt/
 RUN ./autogen.sh
 RUN ./configure --with-libressl
 RUN make
+
+RUN mkdir -p /root/bitcoin
+RUN cp /mnt/src/nullexd /root/bin/
+RUN cp /mnt/src/qt/nullex-qt /root/bin/
