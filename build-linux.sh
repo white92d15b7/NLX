@@ -1,4 +1,5 @@
 #!/bin/bash
+### install deps
 apt update
 apt install build-essential \
   libtool autotools-dev autoconf pkg-config libssl-dev libevent-dev \
@@ -15,3 +16,14 @@ apt install libqt5gui5 libqt5core5a libqt5dbus5 qttools5-dev \
   qttools5-dev-tools libprotobuf-dev protobuf-compiler libqrencode-dev -y
 
 apt install bsdmainutils libzmq3-dev -y
+
+### build 
+./autogen.sh
+./configure --with-libressl
+make
+
+### 
+mkdir ~/bin
+cp src/nullexd /usr/local/bin/ 
+cp src/qt/nullex-qt /usr/local/bin/
+chmod a+x /usr/local/bin/nullex*
