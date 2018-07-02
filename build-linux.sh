@@ -23,7 +23,6 @@ apt install bsdmainutils libzmq3-dev -y
 make
 
 ### 
-mkdir ~/bin
-cp src/nullexd /usr/local/bin/ 
-cp src/qt/nullex-qt /usr/local/bin/
+cp -f src/nullex* /usr/local/bin/ 
+cp -f src/qt/nullex-qt /usr/local/bin/
 chmod a+x /usr/local/bin/nullex*
