@@ -99,7 +99,7 @@ public:
         pchMessageStart[1] = 0xb4;
         pchMessageStart[2] = 0xbd;
         pchMessageStart[3] = 0xb9;
-        vAlertPubKey = ParseHex("02997a00d5d995dfdd05854fa5d5ee5a6b0faecafb458305d283c5ed42d342ee67");
+        vAlertPubKey = ParseHex("037e7b3d2d153973d6280de27107f1401413f9a06fa6460edaf852d40985e8258b");
         nDefaultPort = 43879;
         bnProofOfWorkLimit = ~uint256(0) >> 20; 
         nSubsidyHalvingInterval = 210000;
@@ -172,8 +172,8 @@ public:
         fHeadersFirstSyncingActive = false;
 
         nPoolMaxTransactions = 3;
-        strSporkKey = "02997a00d5d995dfdd05854fa5d5ee5a6b0faecafb458305d283c5ed42d342ee67";
-        strObfuscationPoolDummyAddress = "A87q2gC9j6nNrnzCsg4aY6bHMLsT9nUhEw";
+        strSporkKey = "037e7b3d2d153973d6280de27107f1401413f9a06fa6460edaf852d40985e8258b";
+        strObfuscationPoolDummyAddress = "AdHqNDG3dTf6b8R3UHc3BAUdX6R1J8nBRV";
         nStartMasternodePayments = 1403728576; //Wed, 25 Jun 2014 20:36:16 GMT
 
         /** Zerocoin */
