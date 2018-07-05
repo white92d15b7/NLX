@@ -115,17 +115,17 @@ public:
         nMaxMoneyOut = 10000000000 * COIN;
 
         /** Height or Time Based Activations **/
-        nLastPOWBlock = 20001;
-        nModifierUpdateBlock = 0;
-        nZerocoinStartHeight = 20002;
-        nZerocoinStartTime = 1515434000; 
-        nBlockEnforceSerialRange = 20004; //Enforce serial range starting this block
-        nBlockRecalculateAccumulators = 20005; //Trigger a recalculation of accumulators
-        nBlockFirstFraudulent = 20003; //First block that bad serials emerged
-        nBlockLastGoodCheckpoint = 20005; //Last valid accumulator checkpoint
-nBlockEnforceInvalidUTXO = 20001; //Start enforcing the invalid UTXO'ss
-
-        const char* pszTimestamp = "Bitcoin Price Manipulation investigated June 2018 - The New Nullex Arrives";
+        nModifierUpdateBlock = 1;
+        nZerocoinStartHeight = 3000000;
+        nZerocoinStartTime = 1556602933; 
+        nBlockEnforceSerialRange = 895400; //Enforce serial range starting this block
+        nBlockRecalculateAccumulators = 908000; //Trigger a recalculation of accumulators
+        nBlockFirstFraudulent = 891737; //First block that bad serials emerged
+        nBlockLastGoodCheckpoint = 0; //Last valid accumulator checkpoint
+        nBlockEnforceInvalidUTXO = 902850; //Start enforcing the invalid UTXO's
+        
+	
+	const char* pszTimestamp = "Bitcoin Price Manipulation investigated June 2018 - The New Nullex Arrives";
         CMutableTransaction txNew;
         txNew.vin.resize(1);
         txNew.vout.resize(1);
