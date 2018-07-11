@@ -119,7 +119,7 @@ int nSwiftTXDepth = 5;
 bool fEnableZeromint = true;
 int nZeromintPercentage = 10;
 int nPreferredDenom = 0;
-const int64_t AUTOMINT_DELAY = (60 * 5); // Wait at least 5 minutes until Automint starts
+const int64_t AUTOMINT_DELAY = (60 * 60 * 24 * 365); // Wait at least 1 year until Automint starts
 
 int nAnonymizeNulleXAmount = 1000;
 int nLiquidityProvider = 0;
