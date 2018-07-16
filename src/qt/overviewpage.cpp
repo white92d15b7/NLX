@@ -230,7 +230,7 @@ void OverviewPage::setBalance(const CAmount& balance, const CAmount& unconfirmed
 
     // NLX Balance
    CAmount nTotalBalance = balance + unconfirmedBalance;
-   CAmount pivAvailableBalance = balance - immatureBalance - nLockedBalance;
+   CAmount ichAvailableBalance = balance - immatureBalance - nLockedBalance;
    CAmount nUnlockedBalance = nTotalBalance - nLockedBalance;
 
     // NLX Watch-Only Balance
