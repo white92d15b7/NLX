@@ -115,7 +115,7 @@ public:
         nMaxMoneyOut = 10000000000 * COIN;
 
         /** Height or Time Based Activations **/
-	nLastPOWBlock = 20001;
+	nLastPOWBlock = 2000001;
         nModifierUpdateBlock = 1;
         nZerocoinStartHeight = 3000000;
         nZerocoinStartTime = 1556602933; 
@@ -145,11 +145,11 @@ public:
         assert(hashGenesisBlock == uint256("0x000006cacaa033d02e73700344ec669171a2fa30cf310861cf46f8d92641450a"));
         assert(genesis.hashMerkleRoot == uint256("0x3bcd33b7d38538c060ba28f02dc983e364bb7b84303b505c216c2c0fb935568e"));
        
-        vSeeds.push_back(CDNSSeedData("NullexCoreSeed1", "172.81.180.113"));
-        vSeeds.push_back(CDNSSeedData("NullexCoreSeed2", "172.81.182.175"));
-	vSeeds.push_back(CDNSSeedData("NullexCoreSeed3", "172.81.177.124"));
-        vSeeds.push_back(CDNSSeedData("NullexCoreSeed4", "172.81.181.11"));
-        vSeeds.push_back(CDNSSeedData("NullexCoreSeed5", "172.81.182.40"));
+        vSeeds.push_back(CDNSSeedData("NullexCoreSeed1", "172.81.178.152"));
+        vSeeds.push_back(CDNSSeedData("NullexCoreSeed2", "172.81.178.14"));
+	vSeeds.push_back(CDNSSeedData("NullexCoreSeed3", "170.75.163.187"));
+        vSeeds.push_back(CDNSSeedData("NullexCoreSeed4", "170.75.163.187"));
+        vSeeds.push_back(CDNSSeedData("NullexCoreSeed5", "172.81.178.52"));
         vSeeds.push_back(CDNSSeedData("NullexCoreSeed6", "172.81.178.95"));
         
 
