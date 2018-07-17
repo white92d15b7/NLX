@@ -40,8 +40,8 @@
 // Modify version number here!!!
 #define CLIENT_VERSION_MAJOR 1
 #define CLIENT_VERSION_MINOR 3
-#define CLIENT_VERSION_REVISION 3
-#define CLIENT_VERSION_BUILD 1
+#define CLIENT_VERSION_REVISION 4
+#define CLIENT_VERSION_BUILD 0
 
 
 /**
