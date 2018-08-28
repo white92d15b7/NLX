@@ -1,0 +1,12 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=NulleX
+Comment=NulleX P2P Cryptocurrency
+Comment[fr]=NulleX, monnaie virtuelle cryptographique pair à pair
+Comment[tr]=NulleX, eşten eşe kriptografik sanal para birimi
+Exec=nullex-qt %u
+Terminal=false
+Type=Application
+Icon=nullex128
+MimeType=x-scheme-handler/nullex;
+Categories=Office;Finance;

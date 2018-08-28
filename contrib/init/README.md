@@ -1,10 +1,10 @@
 Sample configuration files for:
 
-SystemD: instacashd.service
-Upstart: instacashd.conf
-OpenRC:  instacashd.openrc
-         instacashd.openrcconf
-CentOS:  instacashd.init
+SystemD: nullexd.service
+Upstart: NulleX.conf
+OpenRC:  nullexd.openrc
+         nullexd.openrcconf
+CentOS:  nullexd.init
 
 have been made available to assist packagers in creating node packages here.
 

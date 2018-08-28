@@ -332,7 +332,7 @@ HEADERS += src/activemasternode.h \
            src/secp256k1/src/java/org_bitcoin_NativeSecp256k1.h \
            src/crypto/aes_helper.c \
            src/qt/bitcoinamountfield.moc \
-           src/qt/instacash.moc \
+           src/qt/nullex.moc \
            src/qt/intro.moc \
            src/qt/overviewpage.moc \
            src/qt/rpcconsole.moc \
@@ -373,9 +373,9 @@ SOURCES += src/activemasternode.cpp \
            src/crypter.cpp \
            src/obfuscation-relay.cpp \
            src/obfuscation.cpp \
-           src/instacash-cli.cpp \
-           src/instacash-tx.cpp \
-           src/instacash.cpp \
+           src/nullex-cli.cpp \
+           src/nullex-tx.cpp \
+           src/nullex.cpp \
            src/db.cpp \
            src/eccryptoverify.cpp \
            src/ecwrapper.cpp \
@@ -470,8 +470,8 @@ SOURCES += src/activemasternode.cpp \
            src/qt/coincontroltreewidget.cpp \
            src/qt/csvmodelwriter.cpp \
            src/qt/obfuscationconfig.cpp \
-           src/qt/instacash.cpp \
-           src/qt/instacashstrings.cpp \
+           src/qt/nullex.cpp \
+           src/qt/nullexstrings.cpp \
            src/qt/editaddressdialog.cpp \
            src/qt/guiutil.cpp \
            src/qt/intro.cpp \
@@ -549,7 +549,7 @@ SOURCES += src/activemasternode.cpp \
            src/test/sighash_tests.cpp \
            src/test/sigopcount_tests.cpp \
            src/test/skiplist_tests.cpp \
-           src/test/test_instacash.cpp \
+           src/test/test_nullex.cpp \
            src/test/timedata_tests.cpp \
            src/test/transaction_tests.cpp \
            src/test/uint256_tests.cpp \
@@ -640,21 +640,21 @@ SOURCES += src/activemasternode.cpp \
            src/leveldb/helpers/memenv/memenv.cc \
            src/leveldb/helpers/memenv/memenv_test.cc \
            src/secp256k1/src/java/org_bitcoin_NativeSecp256k1.c
-RESOURCES += src/qt/instacash.qrc src/qt/instacash_locale.qrc
+RESOURCES += src/qt/nullex.qrc src/qt/nullex_locale.qrc
 
-TRANSLATIONS += src/qt/locale/instacash_bg.ts \
-                src/qt/locale/instacash_de.ts \
-                src/qt/locale/instacash_en.ts \
-                src/qt/locale/instacash_es.ts \
-                src/qt/locale/instacash_fi.ts \
-                src/qt/locale/instacash_fr.ts \
-                src/qt/locale/instacash_it.ts \
-                src/qt/locale/instacash_ja.ts \
-                src/qt/locale/instacash_pl.ts \
-                src/qt/locale/instacash_pt.ts \
-                src/qt/locale/instacash_ru.ts \
-                src/qt/locale/instacash_sk.ts \
-                src/qt/locale/instacash_sv.ts \
-                src/qt/locale/instacash_vi.ts \
-                src/qt/locale/instacash_zh_CN.ts \
-                src/qt/locale/instacash_zh_TW.ts
+TRANSLATIONS += src/qt/locale/nullex_bg.ts \
+                src/qt/locale/nullex_de.ts \
+                src/qt/locale/nullex_en.ts \
+                src/qt/locale/nullex_es.ts \
+                src/qt/locale/nullex_fi.ts \
+                src/qt/locale/nullex_fr.ts \
+                src/qt/locale/nullex_it.ts \
+                src/qt/locale/nullex_ja.ts \
+                src/qt/locale/nullex_pl.ts \
+                src/qt/locale/nullex_pt.ts \
+                src/qt/locale/nullex_ru.ts \
+                src/qt/locale/nullex_sk.ts \
+                src/qt/locale/nullex_sv.ts \
+                src/qt/locale/nullex_vi.ts \
+                src/qt/locale/nullex_zh_CN.ts \
+                src/qt/locale/nullex_zh_TW.ts
