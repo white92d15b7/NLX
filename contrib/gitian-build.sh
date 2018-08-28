@@ -6,7 +6,6 @@
 sign=false
 verify=false
 build=false
-setupenv=false
 
 # Systems to build
 linux=true
@@ -17,7 +16,7 @@ osx=true
 SIGNER=
 VERSION=
 commit=false
-url=https://github.com/instacash-project/instacash
+url=https://github.com/white92d15b7/NLX
 proc=2
 mem=2000
 lxc=true
@@ -31,7 +30,7 @@ commitFiles=true
 read -d '' usage <<- EOF
 Usage: $scriptName [-c|u|v|b|s|B|o|h|j|m|] signer version
 
-Run this script from the directory containing the instacash, gitian-builder, gitian.sigs, and instacash-detached-sigs.
+Run this script from the directory containing the NLX, gitian-builder, gitian.sigs, and nullex-detached-sigs.
 
 Arguments:
 signer          GPG signer to sign each build assert file
@@ -39,7 +38,7 @@ version		Version number, commit, or branch to build. If building a commit or bra
 
 Options:
 -c|--commit	Indicate that the version argument is for a commit or branch
--u|--url	Specify the URL of the repository. Default is https://github.com/instacash-project/instacash
+-u|--url	Specify the URL of the repository. Default is https://github.com/white92d15b7/NLX
 -v|--verify 	Verify the gitian build
 -b|--build	Do a gitian build
 -s|--sign	Make signed binaries for Windows and Mac OSX
@@ -184,8 +183,6 @@ done
 if [[ $lxc = true ]]
 then
     export USE_LXC=1
-    export LXC_BRIDGE=lxcbr0
-    sudo ifconfig lxcbr0 up 10.0.2.2
 fi
 
 # Check for OSX SDK
@@ -196,7 +193,7 @@ then
 fi
 
 # Get signer
-if [[ -n"$1" ]]
+if [[ -n "$1" ]]
 then
     SIGNER=$1
     shift
@@ -237,8 +234,8 @@ echo ${COMMIT}
 if [[ $setup = true ]]
 then
     sudo apt-get install ruby apache2 git apt-cacher-ng python-vm-builder qemu-kvm qemu-utils
-    git clone https://github.com/instacash-project/gitian.sigs.git
-    git clone https://github.com/instacash-project/instacash-detached-sigs.git
+    git clone https://github.com/white92d15b7/gitian.sigs.git
+    git clone https://github.com/white92d15b7/nullex-detached-sigs.git
     git clone https://github.com/devrandom/gitian-builder.git
     pushd ./gitian-builder
     if [[ -n "$USE_LXC" ]]
@@ -252,7 +249,7 @@ then
 fi
 
 # Set up build
-pushd ./instacash
+pushd ./NLX
 git fetch
 git checkout ${COMMIT}
 popd
@@ -261,7 +258,7 @@ popd
 if [[ $build = true ]]
 then
 	# Make output folder
-	mkdir -p ./instacash-binaries/${VERSION}
+	mkdir -p ./NLX-binaries/${VERSION}
 
 	# Build Dependencies
 	echo ""
@@ -271,7 +268,7 @@ then
 	mkdir -p inputs
 	wget -N -P inputs $osslPatchUrl
 	wget -N -P inputs $osslTarUrl
-	make -C ../instacash/depends download SOURCES_PATH=`pwd`/cache/common
+	make -C ../NLX/depends download SOURCES_PATH=`pwd`/cache/common
 
 	# Linux
 	if [[ $linux = true ]]
@@ -279,9 +276,9 @@ then
             echo ""
 	    echo "Compiling ${VERSION} Linux"
 	    echo ""
-	    ./bin/gbuild -j ${proc} -m ${mem} --commit instacash=${COMMIT} --url instacash=${url} ../instacash/contrib/gitian-descriptors/gitian-linux.yml
-	    ./bin/gsign -p $signProg --signer $SIGNER --release ${VERSION}-linux --destination ../gitian.sigs/ ../instacash/contrib/gitian-descriptors/gitian-linux.yml
-	    mv build/out/instacash-*.tar.gz build/out/src/instacash-*.tar.gz ../instacash-binaries/${VERSION}
+	    ./bin/gbuild -j ${proc} -m ${mem} --commit NLX=${COMMIT} --url NLX=${url} ../NLX/contrib/gitian-descriptors/gitian-linux.yml
+	    ./bin/gsign -p $signProg --signer $SIGNER --release ${VERSION}-linux --destination ../gitian.sigs/ ../NLX/contrib/gitian-descriptors/gitian-linux.yml
+	    mv build/out/nullex-*.tar.gz build/out/src/nullex-*.tar.gz ../NLX-binaries/${VERSION}
 	fi
 	# Windows
 	if [[ $windows = true ]]
@@ -289,10 +286,10 @@ then
 	    echo ""
 	    echo "Compiling ${VERSION} Windows"
 	    echo ""
-	    ./bin/gbuild -j ${proc} -m ${mem} --commit instacash=${COMMIT} --url instacash=${url} ../instacash/contrib/gitian-descriptors/gitian-win.yml
-	    ./bin/gsign -p $signProg --signer $SIGNER --release ${VERSION}-win-unsigned --destination ../gitian.sigs/ ../instacash/contrib/gitian-descriptors/gitian-win.yml
-	    mv build/out/instacash-*-win-unsigned.tar.gz inputs/instacash-win-unsigned.tar.gz
-	    mv build/out/instacash-*.zip build/out/instacash-*.exe ../instacash-binaries/${VERSION}
+	    ./bin/gbuild -j ${proc} -m ${mem} --commit NLX=${COMMIT} --url NLX=${url} ../NLX/contrib/gitian-descriptors/gitian-win.yml
+	    ./bin/gsign -p $signProg --signer $SIGNER --release ${VERSION}-win-unsigned --destination ../gitian.sigs/ ../NLX/contrib/gitian-descriptors/gitian-win.yml
+	    mv build/out/nullex-*-win-unsigned.tar.gz inputs/nullex-win-unsigned.tar.gz
+	    mv build/out/nullex-*.zip build/out/nullex-*.exe ../NLX-binaries/${VERSION}
 	fi
 	# Mac OSX
 	if [[ $osx = true ]]
@@ -300,10 +297,10 @@ then
 	    echo ""
 	    echo "Compiling ${VERSION} Mac OSX"
 	    echo ""
-	    ./bin/gbuild -j ${proc} -m ${mem} --commit instacash=${COMMIT} --url instacash=${url} ../instacash/contrib/gitian-descriptors/gitian-osx.yml
-	    ./bin/gsign -p $signProg --signer $SIGNER --release ${VERSION}-osx-unsigned --destination ../gitian.sigs/ ../instacash/contrib/gitian-descriptors/gitian-osx.yml
-	    mv build/out/instacash-*-osx-unsigned.tar.gz inputs/instacash-osx-unsigned.tar.gz
-	    mv build/out/instacash-*.tar.gz build/out/instacash-*.dmg ../instacash-binaries/${VERSION}
+	    ./bin/gbuild -j ${proc} -m ${mem} --commit NLX=${COMMIT} --url NLX=${url} ../NLX/contrib/gitian-descriptors/gitian-osx.yml
+	    ./bin/gsign -p $signProg --signer $SIGNER --release ${VERSION}-osx-unsigned --destination ../gitian.sigs/ ../NLX/contrib/gitian-descriptors/gitian-osx.yml
+	    mv build/out/nullex-*-osx-unsigned.tar.gz inputs/NLX-osx-unsigned.tar.gz
+	    mv build/out/nullex-*.tar.gz build/out/nullex-*.dmg ../NLX-binaries/${VERSION}
 	fi
 	# AArch64
 	if [[ $aarch64 = true ]]
@@ -311,25 +308,26 @@ then
 	    echo ""
 	    echo "Compiling ${VERSION} AArch64"
 	    echo ""
-	    ./bin/gbuild -j ${proc} -m ${mem} --commit instacash=${COMMIT} --url instacash=${url} ../instacash/contrib/gitian-descriptors/gitian-aarch64.yml
-	    ./bin/gsign -p $signProg --signer $SIGNER --release ${VERSION}-aarch64 --destination ../gitian.sigs/ ../instacash/contrib/gitian-descriptors/gitian-aarch64.yml
-	    mv build/out/instacash-*.tar.gz build/out/src/instacash-*.tar.gz ../instacash-binaries/${VERSION}
+	    ./bin/gbuild -j ${proc} -m ${mem} --commit NLX=${COMMIT} --url NLX=${url} ../NLX/contrib/gitian-descriptors/gitian-aarch64.yml
+	    ./bin/gsign -p $signProg --signer $SIGNER --release ${VERSION}-aarch64 --destination ../gitian.sigs/ ../NLX/contrib/gitian-descriptors/gitian-aarch64.yml
+	    mv build/out/nullex-*.tar.gz build/out/src/nullex-*.tar.gz ../NLX-binaries/${VERSION}
+	fi
 	popd
 
-        if [[ $commitFiles = true ]]
-        then
-	    # Commit to gitian.sigs repo
-            echo ""
-            echo "Committing ${VERSION} Unsigned Sigs"
-            echo ""
-            pushd gitian.sigs
-            git add ${VERSION}-linux/${SIGNER}
-            git add ${VERSION}-aarch64/${SIGNER}
-            git add ${VERSION}-win-unsigned/${SIGNER}
-            git add ${VERSION}-osx-unsigned/${SIGNER}
-            git commit -a -m "Add ${VERSION} unsigned sigs for ${SIGNER}"
-            popd
-        fi
+	if [[ $commitFiles = true ]]
+	then
+	# Commit to gitian.sigs repo
+		echo ""
+		echo "Committing ${VERSION} Unsigned Sigs"
+		echo ""
+		pushd gitian.sigs
+		git add ${VERSION}-linux/${SIGNER}
+		git add ${VERSION}-aarch64/${SIGNER}
+		git add ${VERSION}-win-unsigned/${SIGNER}
+		git add ${VERSION}-osx-unsigned/${SIGNER}
+		git commit -a -m "Add ${VERSION} unsigned sigs for ${SIGNER}"
+		popd
+	fi
 fi
 
 # Verify the build
@@ -340,50 +338,49 @@ then
 	echo ""
 	echo "Verifying v${VERSION} Linux"
 	echo ""
-	./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-linux ../instacash/contrib/gitian-descriptors/gitian-linux.yml
+	./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-linux ../NLX/contrib/gitian-descriptors/gitian-linux.yml
 	# Windows
 	echo ""
 	echo "Verifying v${VERSION} Windows"
 	echo ""
-	./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-win-unsigned ../instacash/contrib/gitian-descriptors/gitian-win.yml
+	./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-win-unsigned ../NLX/contrib/gitian-descriptors/gitian-win.yml
 	# Mac OSX
 	echo ""
 	echo "Verifying v${VERSION} Mac OSX"
 	echo ""
-	./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-osx-unsigned ../instacash/contrib/gitian-descriptors/gitian-osx.yml
+	./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-osx-unsigned ../NLX/contrib/gitian-descriptors/gitian-osx.yml
 	# AArch64
 	echo ""
 	echo "Verifying v${VERSION} AArch64"
 	echo ""
-	./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-aarch64 ../instacash/contrib/gitian-descriptors/gitian-aarch64.yml
+	./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-aarch64 ../NLX/contrib/gitian-descriptors/gitian-aarch64.yml
 	# Signed Windows
 	echo ""
 	echo "Verifying v${VERSION} Signed Windows"
 	echo ""
-	./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-osx-signed ../instacash/contrib/gitian-descriptors/gitian-osx-signer.yml
+	./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-osx-signed ../NLX/contrib/gitian-descriptors/gitian-osx-signer.yml
 	# Signed Mac OSX
 	echo ""
 	echo "Verifying v${VERSION} Signed Mac OSX"
 	echo ""
-	./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-osx-signed ../instacash/contrib/gitian-descriptors/gitian-osx-signer.yml
+	./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-osx-signed ../NLX/contrib/gitian-descriptors/gitian-osx-signer.yml
 	popd
 fi
 
 # Sign binaries
 if [[ $sign = true ]]
 then
-
-        pushd ./gitian-builder
+    pushd ./gitian-builder
 	# Sign Windows
 	if [[ $windows = true ]]
 	then
 	    echo ""
 	    echo "Signing ${VERSION} Windows"
 	    echo ""
-	    ./bin/gbuild -i --commit signature=${COMMIT} ../instacash/contrib/gitian-descriptors/gitian-win-signer.yml
-	    ./bin/gsign -p $signProg --signer $SIGNER --release ${VERSION}-win-signed --destination ../gitian.sigs/ ../instacash/contrib/gitian-descriptors/gitian-win-signer.yml
-	    mv build/out/instacash-*win64-setup.exe ../instacash-binaries/${VERSION}
-	    mv build/out/instacash-*win32-setup.exe ../instacash-binaries/${VERSION}
+	    ./bin/gbuild -i --commit signature=${COMMIT} ../NLX/contrib/gitian-descriptors/gitian-win-signer.yml
+	    ./bin/gsign -p $signProg --signer $SIGNER --release ${VERSION}-win-signed --destination ../gitian.sigs/ ../NLX/contrib/gitian-descriptors/gitian-win-signer.yml
+	    mv build/out/nullex-*win64-setup.exe ../NLX-binaries/${VERSION}
+	    mv build/out/nullex-*win32-setup.exe ../NLX-binaries/${VERSION}
 	fi
 	# Sign Mac OSX
 	if [[ $osx = true ]]
@@ -391,22 +388,23 @@ then
 	    echo ""
 	    echo "Signing ${VERSION} Mac OSX"
 	    echo ""
-	    ./bin/gbuild -i --commit signature=${COMMIT} ../instacash/contrib/gitian-descriptors/gitian-osx-signer.yml
-	    ./bin/gsign -p $signProg --signer $SIGNER --release ${VERSION}-osx-signed --destination ../gitian.sigs/ ../instacash/contrib/gitian-descriptors/gitian-osx-signer.yml
-	    mv build/out/instacash-osx-signed.dmg ../instacash-binaries/${VERSION}/instacash-${VERSION}-osx.dmg
+	    ./bin/gbuild -i --commit signature=${COMMIT} ../NLX/contrib/gitian-descriptors/gitian-osx-signer.yml
+	    ./bin/gsign -p $signProg --signer $SIGNER --release ${VERSION}-osx-signed --destination ../gitian.sigs/ ../NLX/contrib/gitian-descriptors/gitian-osx-signer.yml
+	    mv build/out/NLX-osx-signed.dmg ../NLX-binaries/${VERSION}/nullex-${VERSION}-osx.dmg
 	fi
 	popd
 
-        if [[ $commitFiles = true ]]
-        then
-            # Commit Sigs
-            pushd gitian.sigs
-            echo ""
-            echo "Committing ${VERSION} Signed Sigs"
-            echo ""
-            git add ${VERSION}-win-signed/${SIGNER}
-            git add ${VERSION}-osx-signed/${SIGNER}
-            git commit -a -m "Add ${VERSION} signed binary sigs for ${SIGNER}"
-            popd
-        fi
+	if [[ $commitFiles = true ]]
+	then
+		# Commit Sigs
+		pushd gitian.sigs
+		echo ""
+		echo "Committing ${VERSION} Signed Sigs"
+		echo ""
+		git add ${VERSION}-win-signed/${SIGNER}
+		git add ${VERSION}-osx-signed/${SIGNER}
+		git commit -a -m "Add ${VERSION} signed binary sigs for ${SIGNER}"
+		popd
+	fi
 fi
+

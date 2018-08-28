@@ -889,12 +889,12 @@ QDialog#HelpMessageDialog QScrollBar:vertical, QDialog#HelpMessageDialog QScroll
 border:0;
 }
 
-/* About InstaCash Dialog */
-QDialog#AboutDialog QLabel#label, QDialog#AboutDialog QLabel#copyrightLabel, QDialog#AboutDialog QLabel#label_2 { /* About InstaCash Contents */
+/* About NulleX Dialog */
+QDialog#AboutDialog QLabel#label, QDialog#AboutDialog QLabel#copyrightLabel, QDialog#AboutDialog QLabel#label_2 { /* About NulleX Contents */
 margin-left:10px;
 }
 
-QDialog#AboutDialog QLabel#label_2 { /* Margin for About InstaCash text */
+QDialog#AboutDialog QLabel#label_2 { /* Margin for About NulleX text */
 margin-right:10px;
 }
 
@@ -921,11 +921,11 @@ background-color:#ffffff;
 
 QLabel#labelOverviewHeaderRight {
 qproperty-alignment: 'AlignVCenter | AlignRight';
-background-image: url(':/images/instacash_logo_horizontal');
+background-image: url(':/images/nullex_logo_horizontal');
 background-repeat: no-repeat;
 }
 
-QWidget .QFrame#frame_Header { /* Header with Page-Title and InstaCash-image */
+QWidget .QFrame#frame_Header { /* Header with Page-Title and NulleX-image */
 min-width:400px;
 background-color:#ffffff;
 }
