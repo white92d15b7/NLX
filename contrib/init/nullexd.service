@@ -1,0 +1,26 @@
+[Unit]
+Description=NulleX's distributed currency daemon
+After=network.target
+
+[Service]
+User=nullex
+Group=nullex
+
+Type=forking
+PIDFile=/var/lib/nullexd/NulleXd.pid
+
+ExecStart=/usr/bin/nullexd -daemon -pid=/var/lib/nullexd/NulleXd.pid \
+          -conf=/etc/nullex/NulleX.conf -datadir=/var/lib/nullexd
+
+ExecStop=-/usr/bin/nullex-cli -conf=/etc/nullex/NulleX.conf \
+         -datadir=/var/lib/nullexd stop
+
+Restart=always
+PrivateTmp=true
+TimeoutStopSec=60s
+TimeoutStartSec=2s
+StartLimitInterval=120s
+StartLimitBurst=5
+
+[Install]
+WantedBy=multi-user.target
