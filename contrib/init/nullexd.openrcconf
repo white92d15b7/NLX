@@ -1,0 +1,26 @@
+# /etc/conf.d/nullexd: config file for /etc/init.d/nullexd
+
+# Config file location
+#BITCOIND_CONFIGFILE="/etc/nullex/NulleX.conf"
+
+# What directory to write pidfile to?  (created and owned by $BITCOIND_USER)
+#BITCOIND_PIDDIR="/var/run/nullexd"
+
+# What filename to give the pidfile
+#BITCOIND_PIDFILE="${BITCOIND_PIDDIR}/NulleXd.pid"
+
+# Where to write nullexd data (be mindful that the blockchain is large)
+#BITCOIND_DATADIR="/var/lib/nullexd"
+
+# User and group to own nullexd process
+#BITCOIND_USER="nullex"
+#BITCOIND_GROUP="nullex"
+
+# Path to nullexd executable
+#BITCOIND_BIN="/usr/bin/nullexd"
+
+# Nice value to run nullexd under
+#BITCOIND_NICE=0
+
+# Additional options (avoid -conf and -datadir, use flags above)
+BITCOIND_OPTS=""
