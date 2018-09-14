@@ -145,13 +145,23 @@ public:
         assert(hashGenesisBlock == uint256("0x000006cacaa033d02e73700344ec669171a2fa30cf310861cf46f8d92641450a"));
         assert(genesis.hashMerkleRoot == uint256("0x3bcd33b7d38538c060ba28f02dc983e364bb7b84303b505c216c2c0fb935568e"));
        
-        vSeeds.push_back(CDNSSeedData("NullexCoreSeed1", "172.81.178.152"));
-        vSeeds.push_back(CDNSSeedData("NullexCoreSeed2", "172.81.178.14"));
+        //ipv4
+	
+	vSeeds.push_back(CDNSSeedData("NullexCoreSeed1", "149.56.200.17"));
+        vSeeds.push_back(CDNSSeedData("NullexCoreSeed2", "172.81.180.136"));
 	vSeeds.push_back(CDNSSeedData("NullexCoreSeed3", "170.75.163.187"));
-        vSeeds.push_back(CDNSSeedData("NullexCoreSeed4", "170.75.163.187"));
-        vSeeds.push_back(CDNSSeedData("NullexCoreSeed5", "172.81.178.52"));
+        vSeeds.push_back(CDNSSeedData("NullexCoreSeed4", "170.75.162.90"));
+        vSeeds.push_back(CDNSSeedData("NullexCoreSeed5", "172.81.178.14"));
         vSeeds.push_back(CDNSSeedData("NullexCoreSeed6", "172.81.178.95"));
         
+	//ipv6
+	
+	vSeeds.push_back(CDNSSeedData("NullexCoreSeed7", "2602:ffb6:4:d928:f816:3eff:fe21:d315"));
+        vSeeds.push_back(CDNSSeedData("NullexCoreSeed8", "2602:ffb6:4:d928:f816:3eff:fecf:85bf"));
+	vSeeds.push_back(CDNSSeedData("NullexCoreSeed9", "2602:ffb6:4:d928:f816:3eff:fef6:340e"));
+        vSeeds.push_back(CDNSSeedData("NullexCoreSeed10", "2602:ffb6:4:d928:f816:3eff:fe56:f6b0"));
+        vSeeds.push_back(CDNSSeedData("NullexCoreSeed11", "2602:ffb6:4:d928:f816:3eff:fe36:67a5"));
+        vSeeds.push_back(CDNSSeedData("NullexCoreSeed12", "2602:ffb6:4:d928:f816:3eff:fe33:8af2"));
 
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1, 23);
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1, 13);
