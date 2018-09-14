@@ -147,7 +147,7 @@ public:
        
         //ipv4
 	
-	vSeeds.push_back(CDNSSeedData("NullexCoreSeed1", "149.56.200.17"));
+	vSeeds.push_back(CDNSSeedData("nlxseeds.nullexdns.online", "nlxseeds.nullexdns.online"));
         vSeeds.push_back(CDNSSeedData("NullexCoreSeed2", "172.81.180.136"));
 	vSeeds.push_back(CDNSSeedData("NullexCoreSeed3", "170.75.163.187"));
         vSeeds.push_back(CDNSSeedData("NullexCoreSeed4", "170.75.162.90"));
