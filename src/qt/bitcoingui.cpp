@@ -559,9 +559,9 @@ void BitcoinGUI::createToolBars()
         toolbar->addAction(overviewAction);
         toolbar->addAction(sendCoinsAction);
         toolbar->addAction(receiveCoinsAction);
-        toolbar->addAction(privacyAction);
+        //toolbar->addAction(privacyAction); hide privacy tab untill zerocoin implementation
         toolbar->addAction(historyAction);
-        toolbar->addAction(privacyAction);
+        //toolbar->addAction(privacyAction); hide privacy tab untill zerocoin implementation
         QSettings settings;
         if (settings.value("fShowMasternodesTab").toBool()) {
             toolbar->addAction(masternodeAction);
@@ -717,7 +717,7 @@ void BitcoinGUI::createTrayIconMenu()
     trayIconMenu->addSeparator();
     trayIconMenu->addAction(sendCoinsAction);
     trayIconMenu->addAction(receiveCoinsAction);
-    trayIconMenu->addAction(privacyAction);
+    //trayIconMenu->addAction(privacyAction); hide privacy tab untill zerocoin implementation
     trayIconMenu->addSeparator();
     trayIconMenu->addAction(signMessageAction);
     trayIconMenu->addAction(verifyMessageAction);
