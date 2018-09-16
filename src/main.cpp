@@ -2142,8 +2142,7 @@ int64_t GetBlockValue(int nHeight)
     return nSubsidy;
 }
 
-    return nSubsidy;
-}
+
 
 int64_t GetMasternodePayment(int nHeight, int64_t blockValue, int nMasternodeCount)
 {
