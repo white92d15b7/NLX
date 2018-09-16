@@ -1,0 +1,21 @@
+To build on linux
+
+sudo add-apt-repository ppa:bitcoin/bitcoin
+sudo apt-get update
+sudo apt-get install build-essential libtool autotools-dev autoconf pkg-config libssl-dev libevent-dev libboost-all-dev git libminiupnpc-dev automake libdb4.8-dev libdb4.8++-dev
+
+If building the Linux Qt you must have the following deps as well.
+
+sudo apt-get install libqt5gui5 libqt5core5a libqt5dbus5 qttools5-dev qttools5-dev-tools libprotobuf-dev protobuf-compiler libqrencode-dev
+
+git clone https://github.com/white92d15b7/NLX.git
+
+cd NLX
+./autogen.sh
+./configure
+sudo make
+sudo make install
+
+nullexd or nullex-qt
+
+
