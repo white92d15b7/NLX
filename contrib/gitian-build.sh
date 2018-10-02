@@ -1,6 +1,18 @@
+#!/bin/bash
 # Copyright (c) 2016 The Bitcoin Core developers
+# Copyright (c) 2018 The NulleX Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
+
+# Configuration settings
+projectName="nullex"				# The name of the wallet or project
+mainSuite="trusty"				# All wallets use the same build model except for AArch64
+aarchSuite="xenial"				# The AArch64 wallet uses this model
+walletOutputDirectory="NLX-binaries"		# The directory where finished wallets will be stored
+githubUsername="white92d15b7"			# The username of the repo for the wallet project. Ie: repo username = devrandom from https://github.com/devrandom/gitian-builder
+githubRepo="NLX"				# The name of the repo for the wallet project. Ie: repo name = gitian-builder from https://github.com/devrandom/gitian-builder
+githubDetachedSigsRepo="nullex-detached-sigs"	# The name of the repo for the detached signatures.
+osxSDKtarballFilename="MacOSX10.11.sdk.tar.gz"	# The name of the Mac OSX SDK tarball file
 
 # What to do
 sign=false
@@ -11,43 +23,60 @@ build=false
 linux=true
 windows=true
 osx=true
+aarch64=true
 
 # Other Basic variables
 SIGNER=
 VERSION=
-commit=false
-url=https://github.com/white92d15b7/NLX
+url=https://github.com/${githubUsername}/${githubRepo}
 proc=2
 mem=2000
-lxc=true
 osslTarUrl=http://downloads.sourceforge.net/project/osslsigncode/osslsigncode/osslsigncode-1.7.1.tar.gz
 osslPatchUrl=https://bitcoincore.org/cfields/osslsigncode-Backports-to-1.7.1.patch
 scriptName=$(basename -- "$0")
 signProg="gpg --detach-sign"
 commitFiles=true
 
+# Force lxc
+export USE_LXC=1
+
+# Functions
+check_clone_repo() {
+	# Ensure repo directory is available
+	if [[ ! -d "${1}" ]]
+	then
+		git clone ${2} ${1}
+	fi
+}
+
+check_install_suite() {
+	# Check if environment is already set up and if not then install it
+	if [[ ! -f "base-${1}-amd64" ]]
+	then
+		echo && echo "Installing ${1} VM" && echo
+		bin/make-base-vm --suite ${1} --arch amd64 --lxc
+	fi
+}
+
 # Help Message
 read -d '' usage <<- EOF
-Usage: $scriptName [-c|u|v|b|s|B|o|h|j|m|] signer version
+Usage: $scriptName [-u|v|b|s|B|o|h|j|m] signer version
 
-Run this script from the directory containing the NLX, gitian-builder, gitian.sigs, and nullex-detached-sigs.
+Run this script from the directory containing the ${githubRepo}, gitian-builder, gitian.sigs, and ${githubDetachedSigsRepo}.
 
 Arguments:
 signer          GPG signer to sign each build assert file
-version		Version number, commit, or branch to build. If building a commit or branch, the -c option must be specified
+version		Version number, commit, or branch to build
 
 Options:
--c|--commit	Indicate that the version argument is for a commit or branch
--u|--url	Specify the URL of the repository. Default is https://github.com/white92d15b7/NLX
+-u|--url	Specify the URL of the repository. Default is https://github.com/${githubUsername}/${githubRepo}
 -v|--verify 	Verify the gitian build
 -b|--build	Do a gitian build
 -s|--sign	Make signed binaries for Windows and Mac OSX
 -B|--buildsign	Build both signed and unsigned binaries
--o|--os		Specify which Operating Systems the build is for. Default is lwx. l for linux, w for windows, x for osx, a for aarch64
+-o|--os		Specify which Operating Systems the build is for. Default is lwxa. l for linux, w for windows, x for osx, a for aarch64
 -j		Number of processes to use. Default 2
 -m		Memory to allocate in MiB. Default 2000
---kvm           Use KVM instead of LXC
---setup         Setup the gitian building environment. Uses KVM. If you want to use lxc, use the --lxc option. Only works on Debian-based systems (Ubuntu, Debian)
 --detach-sign   Create the assert file for detached signing. Will not commit anything.
 --no-commit     Do not commit anything to git
 -h|--help	Print this help message
@@ -73,17 +102,6 @@ while :; do
 	    sign=true
 	    build=true
             ;;
-        # PGP Signer
-        -S|--signer)
-	    if [ -n "$2" ]
-	    then
-		SIGNER=$2
-		shift
-	    else
-		echo 'Error: "--signer" requires a non-empty argument.'
-		exit 1
-	    fi
-           ;;
         # Operating Systems
         -o|--os)
 	    if [ -n "$2" ]
@@ -119,10 +137,6 @@ while :; do
 	    echo "$usage"
 	    exit 0
 	    ;;
-	# Commit or branch
-	-c|--commit)
-	    commit=true
-	    ;;
 	# Number of Processes
 	-j)
 	    if [ -n "$2" ]
@@ -156,10 +170,6 @@ while :; do
 		exit 1
 	    fi
 	    ;;
-        # kvm
-        --kvm)
-            lxc=false
-            ;;
         # Detach sign
         --detach-sign)
             signProg="true"
@@ -169,28 +179,11 @@ while :; do
         --no-commit)
             commitFiles=false
             ;;
-        # Setup
-        --setup)
-            setup=true
-            ;;
 	*)               # Default case: If no more options then break out of the loop.
              break
     esac
     shift
 done
-
-# Set up LXC
-if [[ $lxc = true ]]
-then
-    export USE_LXC=1
-fi
-
-# Check for OSX SDK
-if [[ ! -e "gitian-builder/inputs/MacOSX10.11.sdk.tar.gz" && $osx == true ]]
-then
-    echo "Cannot build for OSX, SDK does not exist. Will build for other OSes"
-    osx=false
-fi
 
 # Get signer
 if [[ -n "$1" ]]
@@ -223,33 +216,12 @@ then
     exit 1
 fi
 
-# Add a "v" if no -c
-if [[ $commit = false ]]
-then
-	COMMIT="v${VERSION}"
-fi
+# Display wallet version
 echo ${COMMIT}
-
-# Setup build environment
-if [[ $setup = true ]]
-then
-    sudo apt-get install ruby apache2 git apt-cacher-ng python-vm-builder qemu-kvm qemu-utils
-    git clone https://github.com/white92d15b7/gitian.sigs.git
-    git clone https://github.com/white92d15b7/nullex-detached-sigs.git
-    git clone https://github.com/devrandom/gitian-builder.git
-    pushd ./gitian-builder
-    if [[ -n "$USE_LXC" ]]
-    then
-        sudo apt-get install lxc
-        bin/make-base-vm --suite trusty --arch amd64 --lxc
-    else
-        bin/make-base-vm --suite trusty --arch amd64
-    fi
-    popd
-fi
-
+# Ensure project directory is available
+check_clone_repo "${githubRepo}" "https://github.com/${githubUsername}/${githubRepo}.git"
 # Set up build
-pushd ./NLX
+pushd ./${githubRepo}
 git fetch
 git checkout ${COMMIT}
 popd
@@ -257,69 +229,75 @@ popd
 # Build
 if [[ $build = true ]]
 then
-	# Make output folder
-	mkdir -p ./NLX-binaries/${VERSION}
-
-	# Build Dependencies
-	echo ""
-	echo "Building Dependencies"
-	echo ""
-	pushd ./gitian-builder
+	# Setup before building wallets
+	mkdir -p ./${walletOutputDirectory}/${VERSION}
+	check_clone_repo "gitian.sigs" "https://github.com/${githubUsername}/gitian.sigs.git"
+	check_clone_repo "${githubDetachedSigsRepo}" "https://github.com/${githubUsername}/${githubDetachedSigsRepo}.git"
+	check_clone_repo "gitian-builder" "https://github.com/devrandom/gitian-builder.git"
+    pushd ./gitian-builder
 	mkdir -p inputs
+	echo && echo "Building Dependencies" && echo
 	wget -N -P inputs $osslPatchUrl
 	wget -N -P inputs $osslTarUrl
-	make -C ../NLX/depends download SOURCES_PATH=`pwd`/cache/common
+	make -C ../${githubRepo}/depends download SOURCES_PATH=`pwd`/cache/common
 
 	# Linux
 	if [[ $linux = true ]]
 	then
-            echo ""
-	    echo "Compiling ${VERSION} Linux"
-	    echo ""
-	    ./bin/gbuild -j ${proc} -m ${mem} --commit NLX=${COMMIT} --url NLX=${url} ../NLX/contrib/gitian-descriptors/gitian-linux.yml
-	    ./bin/gsign -p $signProg --signer $SIGNER --release ${VERSION}-linux --destination ../gitian.sigs/ ../NLX/contrib/gitian-descriptors/gitian-linux.yml
-	    mv build/out/nullex-*.tar.gz build/out/src/nullex-*.tar.gz ../NLX-binaries/${VERSION}
+		check_install_suite "${mainSuite}"
+        echo && echo "Compiling ${VERSION} Linux" && echo
+	    ./bin/gbuild -j ${proc} -m ${mem} --commit ${githubRepo}=${COMMIT} --url ${githubRepo}=${url} ../${githubRepo}/contrib/gitian-descriptors/gitian-linux.yml
+	    ./bin/gsign -p $signProg --signer $SIGNER --release ${VERSION}-linux --destination ../gitian.sigs/ ../${githubRepo}/contrib/gitian-descriptors/gitian-linux.yml
+	    mv build/out/${projectName}-*.tar.gz build/out/src/${projectName}-*.tar.gz ../${walletOutputDirectory}/${VERSION}
 	fi
 	# Windows
 	if [[ $windows = true ]]
 	then
-	    echo ""
-	    echo "Compiling ${VERSION} Windows"
-	    echo ""
-	    ./bin/gbuild -j ${proc} -m ${mem} --commit NLX=${COMMIT} --url NLX=${url} ../NLX/contrib/gitian-descriptors/gitian-win.yml
-	    ./bin/gsign -p $signProg --signer $SIGNER --release ${VERSION}-win-unsigned --destination ../gitian.sigs/ ../NLX/contrib/gitian-descriptors/gitian-win.yml
-	    mv build/out/nullex-*-win-unsigned.tar.gz inputs/nullex-win-unsigned.tar.gz
-	    mv build/out/nullex-*.zip build/out/nullex-*.exe ../NLX-binaries/${VERSION}
+		check_install_suite "${mainSuite}"
+	    echo && echo "Compiling ${VERSION} Windows" && echo
+	    ./bin/gbuild -j ${proc} -m ${mem} --commit ${githubRepo}=${COMMIT} --url ${githubRepo}=${url} ../${githubRepo}/contrib/gitian-descriptors/gitian-win.yml
+	    ./bin/gsign -p $signProg --signer $SIGNER --release ${VERSION}-win-unsigned --destination ../gitian.sigs/ ../${githubRepo}/contrib/gitian-descriptors/gitian-win.yml
+	    mv build/out/${projectName}-*-win-unsigned.tar.gz inputs/${projectName}-win-unsigned.tar.gz
+	    mv build/out/${projectName}-*.zip build/out/${projectName}-*.exe ../${walletOutputDirectory}/${VERSION}
 	fi
 	# Mac OSX
 	if [[ $osx = true ]]
 	then
-	    echo ""
-	    echo "Compiling ${VERSION} Mac OSX"
-	    echo ""
-	    ./bin/gbuild -j ${proc} -m ${mem} --commit NLX=${COMMIT} --url NLX=${url} ../NLX/contrib/gitian-descriptors/gitian-osx.yml
-	    ./bin/gsign -p $signProg --signer $SIGNER --release ${VERSION}-osx-unsigned --destination ../gitian.sigs/ ../NLX/contrib/gitian-descriptors/gitian-osx.yml
-	    mv build/out/nullex-*-osx-unsigned.tar.gz inputs/NLX-osx-unsigned.tar.gz
-	    mv build/out/nullex-*.tar.gz build/out/nullex-*.dmg ../NLX-binaries/${VERSION}
+		# Check for OSX SDK
+		if [[ ! -f "gitian-builder/inputs/${osxSDKtarballFilename}" ]]
+		then
+			# OSX SDK doesn't exist. Give time to upload it via sftp or other method
+			read -p "OSX SDK tarball is missing. Please upload ${osxSDKtarballFilename} to the gitian-builder/inputs directory and press [ENTER]" 
+		fi
+
+		# Check again for OSX SDK
+		if [[ -f "gitian-builder/inputs/${osxSDKtarballFilename}" ]]
+		then
+			check_install_suite "${mainSuite}"
+			echo && echo "Compiling ${VERSION} Mac OSX" && echo
+			./bin/gbuild -j ${proc} -m ${mem} --commit ${githubRepo}=${COMMIT} --url ${githubRepo}=${url} ../${githubRepo}/contrib/gitian-descriptors/gitian-osx.yml
+			./bin/gsign -p $signProg --signer $SIGNER --release ${VERSION}-osx-unsigned --destination ../gitian.sigs/ ../${githubRepo}/contrib/gitian-descriptors/gitian-osx.yml
+			mv build/out/${projectName}-*-osx-unsigned.tar.gz inputs/${githubRepo}-osx-unsigned.tar.gz
+			mv build/out/${projectName}-*.tar.gz build/out/${projectName}-*.dmg ../${walletOutputDirectory}/${VERSION}
+		else
+			echo && echo "Skipping Mac OSX build" && echo
+		fi
 	fi
 	# AArch64
 	if [[ $aarch64 = true ]]
 	then
-	    echo ""
-	    echo "Compiling ${VERSION} AArch64"
-	    echo ""
-	    ./bin/gbuild -j ${proc} -m ${mem} --commit NLX=${COMMIT} --url NLX=${url} ../NLX/contrib/gitian-descriptors/gitian-aarch64.yml
-	    ./bin/gsign -p $signProg --signer $SIGNER --release ${VERSION}-aarch64 --destination ../gitian.sigs/ ../NLX/contrib/gitian-descriptors/gitian-aarch64.yml
-	    mv build/out/nullex-*.tar.gz build/out/src/nullex-*.tar.gz ../NLX-binaries/${VERSION}
+		check_install_suite "${aarchSuite}"
+	    echo && echo "Compiling ${VERSION} AArch64" && echo
+	    ./bin/gbuild -j ${proc} -m ${mem} --commit ${githubRepo}=${COMMIT} --url ${githubRepo}=${url} ../${githubRepo}/contrib/gitian-descriptors/gitian-aarch64.yml
+	    ./bin/gsign -p $signProg --signer $SIGNER --release ${VERSION}-aarch64 --destination ../gitian.sigs/ ../${githubRepo}/contrib/gitian-descriptors/gitian-aarch64.yml
+	    mv build/out/${projectName}-*.tar.gz build/out/src/${projectName}-*.tar.gz ../${walletOutputDirectory}/${VERSION}
 	fi
 	popd
 
 	if [[ $commitFiles = true ]]
 	then
-	# Commit to gitian.sigs repo
-		echo ""
-		echo "Committing ${VERSION} Unsigned Sigs"
-		echo ""
+		# Commit to gitian.sigs repo
+		echo && echo "Committing ${VERSION} Unsigned Sigs" && echo
 		pushd gitian.sigs
 		git add ${VERSION}-linux/${SIGNER}
 		git add ${VERSION}-aarch64/${SIGNER}
@@ -335,35 +313,23 @@ if [[ $verify = true ]]
 then
 	# Linux
 	pushd ./gitian-builder
-	echo ""
-	echo "Verifying v${VERSION} Linux"
-	echo ""
-	./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-linux ../NLX/contrib/gitian-descriptors/gitian-linux.yml
+	echo && echo "Verifying v${VERSION} Linux" && echo
+	./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-linux ../${githubRepo}/contrib/gitian-descriptors/gitian-linux.yml
 	# Windows
-	echo ""
-	echo "Verifying v${VERSION} Windows"
-	echo ""
-	./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-win-unsigned ../NLX/contrib/gitian-descriptors/gitian-win.yml
+	echo &&	echo "Verifying v${VERSION} Windows" && echo
+	./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-win-unsigned ../${githubRepo}/contrib/gitian-descriptors/gitian-win.yml
 	# Mac OSX
-	echo ""
-	echo "Verifying v${VERSION} Mac OSX"
-	echo ""
-	./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-osx-unsigned ../NLX/contrib/gitian-descriptors/gitian-osx.yml
+	echo && echo "Verifying v${VERSION} Mac OSX" && echo
+	./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-osx-unsigned ../${githubRepo}/contrib/gitian-descriptors/gitian-osx.yml
 	# AArch64
-	echo ""
-	echo "Verifying v${VERSION} AArch64"
-	echo ""
-	./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-aarch64 ../NLX/contrib/gitian-descriptors/gitian-aarch64.yml
+	echo && echo "Verifying v${VERSION} AArch64" && echo
+	./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-aarch64 ../${githubRepo}/contrib/gitian-descriptors/gitian-aarch64.yml
 	# Signed Windows
-	echo ""
-	echo "Verifying v${VERSION} Signed Windows"
-	echo ""
-	./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-osx-signed ../NLX/contrib/gitian-descriptors/gitian-osx-signer.yml
+	echo && echo "Verifying v${VERSION} Signed Windows" && echo
+	./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-osx-signed ../${githubRepo}/contrib/gitian-descriptors/gitian-osx-signer.yml
 	# Signed Mac OSX
-	echo ""
-	echo "Verifying v${VERSION} Signed Mac OSX"
-	echo ""
-	./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-osx-signed ../NLX/contrib/gitian-descriptors/gitian-osx-signer.yml
+	echo && echo "Verifying v${VERSION} Signed Mac OSX" && echo
+	./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-osx-signed ../${githubRepo}/contrib/gitian-descriptors/gitian-osx-signer.yml
 	popd
 fi
 
@@ -374,37 +340,28 @@ then
 	# Sign Windows
 	if [[ $windows = true ]]
 	then
-	    echo ""
-	    echo "Signing ${VERSION} Windows"
-	    echo ""
-	    ./bin/gbuild -i --commit signature=${COMMIT} ../NLX/contrib/gitian-descriptors/gitian-win-signer.yml
-	    ./bin/gsign -p $signProg --signer $SIGNER --release ${VERSION}-win-signed --destination ../gitian.sigs/ ../NLX/contrib/gitian-descriptors/gitian-win-signer.yml
-	    mv build/out/nullex-*win64-setup.exe ../NLX-binaries/${VERSION}
-	    mv build/out/nullex-*win32-setup.exe ../NLX-binaries/${VERSION}
+	    echo && echo "Signing ${VERSION} Windows" && echo
+	    ./bin/gbuild -i --commit signature=${COMMIT} ../${githubRepo}/contrib/gitian-descriptors/gitian-win-signer.yml
+	    ./bin/gsign -p $signProg --signer $SIGNER --release ${VERSION}-win-signed --destination ../gitian.sigs/ ../${githubRepo}/contrib/gitian-descriptors/gitian-win-signer.yml
+	    mv build/out/${projectName}-*win64-setup.exe ../${walletOutputDirectory}/${VERSION}
+	    mv build/out/${projectName}-*win32-setup.exe ../${walletOutputDirectory}/${VERSION}
 	fi
 	# Sign Mac OSX
 	if [[ $osx = true ]]
 	then
-	    echo ""
-	    echo "Signing ${VERSION} Mac OSX"
-	    echo ""
-	    ./bin/gbuild -i --commit signature=${COMMIT} ../NLX/contrib/gitian-descriptors/gitian-osx-signer.yml
-	    ./bin/gsign -p $signProg --signer $SIGNER --release ${VERSION}-osx-signed --destination ../gitian.sigs/ ../NLX/contrib/gitian-descriptors/gitian-osx-signer.yml
-	    mv build/out/NLX-osx-signed.dmg ../NLX-binaries/${VERSION}/nullex-${VERSION}-osx.dmg
+	    echo && echo "Signing ${VERSION} Mac OSX" && echo
+	    ./bin/gbuild -i --commit signature=${COMMIT} ../${githubRepo}/contrib/gitian-descriptors/gitian-osx-signer.yml
+	    ./bin/gsign -p $signProg --signer $SIGNER --release ${VERSION}-osx-signed --destination ../gitian.sigs/ ../${githubRepo}/contrib/gitian-descriptors/gitian-osx-signer.yml
+	    mv build/out/${githubRepo}-osx-signed.dmg ../${walletOutputDirectory}/${VERSION}/${projectName}-${VERSION}-osx.dmg
 	fi
-	popd
 
 	if [[ $commitFiles = true ]]
 	then
 		# Commit Sigs
-		pushd gitian.sigs
-		echo ""
-		echo "Committing ${VERSION} Signed Sigs"
-		echo ""
+		echo && echo "Committing ${VERSION} Signed Sigs" && echo
 		git add ${VERSION}-win-signed/${SIGNER}
 		git add ${VERSION}-osx-signed/${SIGNER}
 		git commit -a -m "Add ${VERSION} signed binary sigs for ${SIGNER}"
-		popd
 	fi
+	popd
 fi
-
