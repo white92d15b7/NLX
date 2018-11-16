@@ -264,14 +264,14 @@ then
 	if [[ $osx = true ]]
 	then
 		# Check for OSX SDK
-		if [[ ! -f "gitian-builder/inputs/${osxSDKtarballFilename}" ]]
+		if [[ ! -f "./inputs/${osxSDKtarballFilename}" ]]
 		then
 			# OSX SDK doesn't exist. Give time to upload it via sftp or other method
 			read -p "OSX SDK tarball is missing. Please upload ${osxSDKtarballFilename} to the gitian-builder/inputs directory and press [ENTER]" 
 		fi
 
 		# Check again for OSX SDK
-		if [[ -f "gitian-builder/inputs/${osxSDKtarballFilename}" ]]
+		if [[ -f "./inputs/${osxSDKtarballFilename}" ]]
 		then
 			check_install_suite "${mainSuite}"
 			echo && echo "Compiling ${VERSION} Mac OSX" && echo
