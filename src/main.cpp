@@ -2136,14 +2136,14 @@ int64_t GetBlockValue(int nHeight)
     } else if (nHeight >= 80000 && nHeight <= 168000) {
         nSubsidy = 8.0 * COIN;
     } else if (nHeight > 168000) {
-        nSubsidy = 4.25 * COIN;
+        nSubsidy = 18.4 * COIN;
     }
 
     return nSubsidy;
 }
 
 
-
+// TODO - nMasternodeCount incorporated with rewards ! 
 int64_t GetMasternodePayment(int nHeight, int64_t blockValue, int nMasternodeCount)
 {
     int64_t ret = 0;
