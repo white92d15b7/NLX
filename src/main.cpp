@@ -2126,7 +2126,7 @@ int64_t GetBlockValue(int nHeight)
             return 1000 * COIN;//TESTNET
     }//TESTNET
 
-    // Don't sync this code
+   // Don't sync this code
     if (nHeight == 0) {
         nSubsidy = 53875351 * COIN;
     } else if (nHeight >= 1 && nHeight <= 20000) {
@@ -2135,7 +2135,9 @@ int64_t GetBlockValue(int nHeight)
         nSubsidy = 4.25 * COIN;
     } else if (nHeight >= 80000 && nHeight <= 168000) {
         nSubsidy = 8.0 * COIN;
-    } else if (nHeight > 168000) {
+    } else if (nHeight >= 168001 && nHeight <= 186000) {
+        nSubsidy = 4.25 * COIN;
+    } else if (nHeight >= 186001) {
         nSubsidy = 18.4 * COIN;
     }
 
