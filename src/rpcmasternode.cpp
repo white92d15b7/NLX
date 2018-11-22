@@ -142,7 +142,8 @@ UniValue masternode(const UniValue& params, bool fHelp)
         (strCommand != "start" && strCommand != "start-alias" && strCommand != "start-many" && strCommand != "start-all" && strCommand != "start-missing" &&
             strCommand != "start-disabled" && strCommand != "list" && strCommand != "list-conf" && strCommand != "count" && strCommand != "enforce" &&
             strCommand != "debug" && strCommand != "current" && strCommand != "winners" && strCommand != "genkey" && strCommand != "connect" &&
-            strCommand != "outputs" && strCommand != "status" && strCommand != "calcscore"))
+            strCommand != "outputs" && strCommand != "status" && strCommand != "calcscore" &&
+            strCommand != "init" && strCommand != "isInit" && strCommand != "kill"))
         throw runtime_error(
             "masternode \"command\"...\n"
             "\nSet of commands to execute masternode related actions\n"
@@ -266,6 +267,23 @@ UniValue masternode(const UniValue& params, bool fHelp)
             newParams.push_back(params[i]);
         }
         return getmasternodescores(newParams, fHelp);
+    }
+
+    if (strCommand == "init") {
+        UniValue newParams(UniValue::VARR);
+        // forward params but skip command
+        for (unsigned int i = 1; i < params.size(); i++) {
+            newParams.push_back(params[i]);
+        }
+        return initmasternode(newParams, fHelp);
+    }
+    
+    if (strCommand == "isInit") {
+        return masternodeisinit(params, fHelp);
+    }
+    
+    if (strCommand == "kill") {
+        return killmasternode(params, fHelp);
     }
 
     return NullUniValue;
@@ -791,6 +809,8 @@ UniValue getmasternodestatus (const UniValue& params, bool fHelp)
         mnObj.push_back(Pair("addr", CBitcoinAddress(pmn->pubKeyCollateralAddress.GetID()).ToString()));
         mnObj.push_back(Pair("status", activeMasternode.status));
         mnObj.push_back(Pair("message", activeMasternode.GetStatus()));
+        mnObj.push_back(Pair("signatureTime", pmn->sigTime));   
+        mnObj.push_back(Pair("lastPingTime", pmn->lastPing.sigTime));
         return mnObj;
     }
     throw runtime_error("Masternode not found in the list of available masternodes. Current status: "
@@ -943,4 +963,71 @@ UniValue getmasternodescores (const UniValue& params, bool fHelp)
     }
 
     return obj;
+}
+
+UniValue initmasternode (const UniValue& params, bool fHelp)
+{
+    if (fHelp || params.size() > 2)
+        throw runtime_error(
+            "initmasternode\n"
+            "\nInitialise masternode\n"
+             "\nArguments:\n"
+            "1. MasterNodePrivKey      (numeric, optional) Show the last n blocks (default 10)\n"
+            "2. MasterNodeAddr      (numeric, optional) Show the last n blocks (default 10)\n"
+             "\nExamples:\n" +
+            HelpExampleCli("initmasternode", "MasterNodePrivKey MasterNodeAddr") + HelpExampleRpc("initmasternode", "MasterNodePrivKey MasterNodeAddr"));
+     if (params.size() == 2) {
+        strMasterNodePrivKey = params[0].get_str();
+        strMasterNodeAddr = params[1].get_str();          
+    } else {
+        throw runtime_error("missing args <MasterNodePrivKey> <MasterNodeAddr>");
+    }
+         
+    CService addrTest = CService(strMasterNodeAddr);
+    if (!addrTest.IsValid()) 
+        throw runtime_error("Invalid -masternodeaddr address: " + strMasterNodeAddr);
+    std::string errorMessage;
+    CKey key;
+    CPubKey pubkey;
+    if (!obfuScationSigner.SetKey(strMasterNodePrivKey, errorMessage, key, pubkey)) {
+        throw runtime_error("Invalid masternodeprivkey. Please see documenation.");
+    }
+    activeMasternode.pubKeyMasternode = pubkey;
+    fMasterNode = true;
+    return true;
+}
+
+UniValue masternodeisinit (const UniValue& params, bool fHelp)
+{
+    if (fHelp || params.size() > 1)
+        throw runtime_error(
+            "masternodeisinit\n"
+            "\nCheck if masternode is initialised\n"
+            "\nExamples:\n" +
+            HelpExampleCli("masternodeisinit", "") + HelpExampleRpc("masternodeisinit", ""));
+    // check flag and variables are set
+    if (!fMasterNode || strMasterNodeAddr == "" || strMasterNodePrivKey == "")
+        return false;
+        
+    // check valid address
+    CService addrTest = CService(strMasterNodeAddr);
+    if (!addrTest.IsValid())
+        return false;
+    std::string errorMessage;
+    CKey key;
+    CPubKey pubkey;
+    if(!obfuScationSigner.SetKey(strMasterNodePrivKey, errorMessage, key, pubkey))
+        return false;
+    return true;
+}
+
+UniValue killmasternode (const UniValue& params, bool fHelp)
+{
+    if (fHelp)
+        throw runtime_error(
+            "killmasternode\n"
+            "\nKill masternode\n"
+            "\nExamples:\n" +
+            HelpExampleCli("killmasternode", "") + HelpExampleRpc("killmasternode", ""));
+    return fMasterNode = false;
 }
