@@ -2121,10 +2121,10 @@ int64_t GetBlockValue(int nHeight)
 {
     int64_t nSubsidy = 0;
 
-    if (Params().NetworkID() == CBaseChainParams::TESTNET) { //TESTNET
-        if (nHeight < 2000000 && nHeight > 0)//TESTNET
-            return 1000 * COIN;//TESTNET
-    }//TESTNET
+    if (Params().NetworkID() == CBaseChainParams::TESTNET) {     //TESTNET
+        if (nHeight < 2000000 && nHeight > 0)                    //TESTNET
+            return 1000 * COIN;                                  //TESTNET
+    }                                                            //TESTNET
 
    // Don't sync this code
     if (nHeight == 0) {
@@ -2135,17 +2135,14 @@ int64_t GetBlockValue(int nHeight)
         nSubsidy = 4.25 * COIN;
     } else if (nHeight >= 80000 && nHeight <= 168000) {
         nSubsidy = 8.0 * COIN;
-    } else if (nHeight >= 168001 && nHeight <= 186000) {
+    } else if (nHeight >= 168001) {
         nSubsidy = 4.25 * COIN;
-    } else if (nHeight >= 186001) {
-        nSubsidy = 18.4 * COIN;
     }
 
     return nSubsidy;
 }
 
-
-// TODO - nMasternodeCount incorporated with rewards ! 
+// TODO - nMasternodeCount 
 int64_t GetMasternodePayment(int nHeight, int64_t blockValue, int nMasternodeCount)
 {
     int64_t ret = 0;
