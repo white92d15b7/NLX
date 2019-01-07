@@ -4,11 +4,11 @@
  * @brief      Denomination functions for the Zerocoin library.
  *
  * @copyright  Copyright 2017 PIVX Developers	
- * @copyright  Copyright 2017 NulleX Developers
+ * @copyright  Copyright 2019 NulleX Developers
  * @license    This project is released under the MIT license.
  **/
 // Copyright (c) 2015-2017 The PIVX developers	
-// Copyright (c) 2015-2017 The NulleX developers
+// Copyright (c) 2015-2019 The NulleX developers
 
 #include "denomination_functions.h"
 

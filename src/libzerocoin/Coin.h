@@ -10,7 +10,7 @@
  * @license    This project is released under the MIT license.
  **/
 // Copyright (c) 2017 The PIVX developers	
-// Copyright (c) 2017 The NulleX developers
+// Copyright (c) 2019 The NulleX developers
 
 #ifndef COIN_H_
 #define COIN_H_

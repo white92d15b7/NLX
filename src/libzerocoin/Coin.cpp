@@ -11,7 +11,7 @@
  **/
 
 // Copyright (c) 2017 The PIVX developers	
-// Copyright (c) 2017 The NulleX developers
+// Copyright (c) 2019 The NulleX developers
 #include <stdexcept>
 #include <iostream>
 #include "Coin.h"
