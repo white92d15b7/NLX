@@ -41,7 +41,7 @@ CFeeRate payTxFee(DEFAULT_TRANSACTION_FEE);
 CAmount maxTxFee = DEFAULT_TRANSACTION_MAXFEE;
 unsigned int nTxConfirmTarget = 1;
 bool bSpendZeroConfChange = true;
-bool bdisableSystemnotifications = false; // Those bubbles can be annoying and slow down the UI when you get lots of trx
+bool bdisableSystemnotifications = true; // Those bubbles can be annoying and slow down the UI when you get lots of trx
 bool fSendFreeTransactions = false;
 bool fPayAtLeastCustomFee = true;
 
