@@ -122,7 +122,7 @@ public:
         nMaxMoneyOut = 10000000000 * COIN;
 
         /** Height or Time Based Activations **/
-	nLastPOWBlock = 79500;
+	    nLastPOWBlock = 79500;
         nModifierUpdateBlock = 1;
         nZerocoinStartHeight = 3000000;
         nZerocoinStartTime = 1556602933; 
@@ -154,23 +154,14 @@ public:
        
         //ipv4
 	
-	vSeeds.push_back(CDNSSeedData("nlxseeds.nullexdns.online", "nlxseeds.nullexdns.online"));
-	vSeeds.push_back(CDNSSeedData("nlx.seeds.mn.zone", "nlx.seeds.mn.zone"));
-	vSeeds.push_back(CDNSSeedData("nlx.mnseeds.com", "nlx.mnseeds.com"));
-        vSeeds.push_back(CDNSSeedData("NullexCoreSeed2", "172.81.180.136"));
-	vSeeds.push_back(CDNSSeedData("NullexCoreSeed3", "170.75.163.187"));
-        vSeeds.push_back(CDNSSeedData("NullexCoreSeed4", "170.75.162.90"));
-        vSeeds.push_back(CDNSSeedData("NullexCoreSeed5", "172.81.178.14"));
-        vSeeds.push_back(CDNSSeedData("NullexCoreSeed6", "172.81.178.95"));
+	   
+        vSeeds.push_back(CDNSSeedData("NullexCoreSeed2", "170.75.175.246"));
+	    
         
-	//ipv6
+	    //ipv6
 	
-	vSeeds.push_back(CDNSSeedData("NullexCoreSeed7", "2602:ffb6:4:d928:f816:3eff:fe21:d315"));
-        vSeeds.push_back(CDNSSeedData("NullexCoreSeed8", "2602:ffb6:4:d928:f816:3eff:fecf:85bf"));
-	vSeeds.push_back(CDNSSeedData("NullexCoreSeed9", "2602:ffb6:4:d928:f816:3eff:fef6:340e"));
-        vSeeds.push_back(CDNSSeedData("NullexCoreSeed10", "2602:ffb6:4:d928:f816:3eff:fe56:f6b0"));
-        vSeeds.push_back(CDNSSeedData("NullexCoreSeed11", "2602:ffb6:4:d928:f816:3eff:fe36:67a5"));
-        vSeeds.push_back(CDNSSeedData("NullexCoreSeed12", "2602:ffb6:4:d928:f816:3eff:fe33:8af2"));
+	    vSeeds.push_back(CDNSSeedData("NullexCoreSeed7", "2602:ffb6:4:d928:f816:3eff:fe52:34"));
+        
 
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1, 23);
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1, 13);
