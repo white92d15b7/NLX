@@ -102,10 +102,10 @@ public:
          * The characters are rarely used upper ASCII, not valid as UTF-8, and produce
          * a large 4-byte int at any alignment.
          */
-        pchMessageStart[0] = 0xc0;
-        pchMessageStart[1] = 0xc4;
-        pchMessageStart[2] = 0xad;
-        pchMessageStart[3] = 0xd9;
+        pchMessageStart[0] = 0xb0;
+        pchMessageStart[1] = 0xb4;
+        pchMessageStart[2] = 0xbd;
+        pchMessageStart[3] = 0xb9;
         vAlertPubKey = ParseHex("037e7b3d2d153973d6280de27107f1401413f9a06fa6460edaf852d40985e8258b");
         nDefaultPort = 43879;
         bnProofOfWorkLimit = ~uint256(0) >> 20; 
