@@ -26,11 +26,6 @@ struct SeedSpec6 {
 
 #include "chainparamsseeds.h"
 
-/**
- * Main network
- */
-
-//! Convert the pnSeeds6 array into usable address objects.
 static void convertSeed6(std::vector<CAddress>& vSeedsOut, const SeedSpec6* data, unsigned int count)
 {
   
@@ -59,10 +54,10 @@ static Checkpoints::MapCheckpoints mapCheckpoints =
 
 static const Checkpoints::CCheckpointData data = {
     &mapCheckpoints,
-    1544201274,   // * UNIX timestamp of last checkpoint block
-    377410,       // * total number of transactions between genesis and last checkpoint
-                  //   (the tx=... number in the SetBestChain debug.log lines)
-    2880          // * estimated number of transactions per day after checkpoint*/
+    1544201274,   
+    377410,      
+                  
+    2880          
 };
 
 static Checkpoints::MapCheckpoints mapCheckpointsTestnet =
@@ -97,11 +92,6 @@ public:
     {
         networkID = CBaseChainParams::MAIN;
         strNetworkID = "main";
-        /**
-         * The message start string is designed to be unlikely to occur in normal data.
-         * The characters are rarely used upper ASCII, not valid as UTF-8, and produce
-         * a large 4-byte int at any alignment.
-         */
         pchMessageStart[0] = 0xb0;
         pchMessageStart[1] = 0xb4;
         pchMessageStart[2] = 0xbd;
@@ -120,9 +110,7 @@ public:
         nMaturity = 50;
         nMasternodeCountDrift = 20;
         nMaxMoneyOut = 10000000000 * COIN;
-
-        /** Height or Time Based Activations **/
-	    nLastPOWBlock = 79500;
+        nLastPOWBlock = 79500;
         nModifierUpdateBlock = 1;
         nZerocoinStartHeight = 3000000;
         nZerocoinStartTime = 1556602933; 
@@ -165,10 +153,7 @@ public:
         base58Prefixes[SECRET_KEY] = std::vector<unsigned char>(1, 212);
         base58Prefixes[EXT_PUBLIC_KEY] = boost::assign::list_of(0x02)(0x2D)(0x25)(0x33).convert_to_container<std::vector<unsigned char> >();
         base58Prefixes[EXT_SECRET_KEY] = boost::assign::list_of(0x02)(0x21)(0x31)(0x2B).convert_to_container<std::vector<unsigned char> >();
-        // 	BIP44 coin type is from https://github.com/satoshilabs/slips/blob/master/slip-0044.md
         base58Prefixes[EXT_COIN_TYPE] = boost::assign::list_of(0x80)(0x00)(0x00)(0x77).convert_to_container<std::vector<unsigned char> >();
-
-        //convertSeed6(vFixedSeeds, pnSeed6_main, ARRAYLEN(pnSeed6_main));
 
         fMiningRequiresPeers = true;
         fAllowMinDifficultyBlocks = false;
@@ -182,9 +167,9 @@ public:
         nPoolMaxTransactions = 3;
         strSporkKey = "037e7b3d2d153973d6280de27107f1401413f9a06fa6460edaf852d40985e8258b";
         strObfuscationPoolDummyAddress = "AdHqNDG3dTf6b8R3UHc3BAUdX6R1J8nBRV";
-        nStartMasternodePayments = 1403728576; //Wed, 25 Jun 2014 20:36:16 GMT
+        nStartMasternodePayments = 1403728576; 
 
-        /** Zerocoin */
+     
         zerocoinModulus = "25195908475657893494027183240048398571429282126204032027777137836043662020707595556264018525880784"
             "4069182906412495150821892985591491761845028084891200728449926873928072877767359714183472702618963750149718246911"
             "6507761337985909570009733045974880842840179742910064245869181719511874612151517265463228221686998754918242243363"
@@ -207,31 +192,10 @@ public:
 };
 static CMainParams mainParams;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /**
  * Testnet (v3)
  */
+
 class CTestNetParams : public CMainParams
 {
 public:
