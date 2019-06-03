@@ -142,7 +142,7 @@ public:
        
         //ipv4
 	vSeeds.push_back(CDNSSeedData("NullexCoreSeed1", "172.81.178.14"));   
-        vSeeds.push_back(CDNSSeedData("NullexCoreSeed2", "66.70.247.81"));
+       
 	
 	//ipv6
 	vSeeds.push_back(CDNSSeedData("NullexCoreSeed7", "2607:9880:1507:fff1:6504:60b:ccfd:dc0b"));
