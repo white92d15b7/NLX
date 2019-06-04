@@ -559,7 +559,7 @@ void BitcoinGUI::createToolBars()
         toolbar->addAction(overviewAction);
         toolbar->addAction(sendCoinsAction);
         toolbar->addAction(receiveCoinsAction);
-        /toolbar->addAction(privacyAction); hide privacy tab untill zerocoin implementation
+        //toolbar->addAction(privacyAction); hide privacy tab untill zerocoin implementation
         toolbar->addAction(historyAction);
         //toolbar->addAction(privacyAction); hide privacy tab untill zerocoin implementation
         QSettings settings;
