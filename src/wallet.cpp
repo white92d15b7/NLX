@@ -2342,7 +2342,7 @@ bool CWallet::SelectCoinsByDenominations(int nDenom, CAmount nValueMin, CAmount 
                     if ((int)vCoinsRet.size() > r) return true;
                 }
                 //Denomination criterion has been met, we can take any matching denominations
-                if ((nDenom & (1 << 0)) && out.tx->vout[out.i].nValue == ((50000 * COIN) + 10000000)) {
+                if ((nDenom & (1 << 0)) && out.tx->vout[out.i].nValue == ((10000 * COIN) + 10000000)) {
                     fAccepted = true;
                 } else if ((nDenom & (1 << 1)) && out.tx->vout[out.i].nValue == ((1000 * COIN) + 1000000)) {
                     fAccepted = true;
