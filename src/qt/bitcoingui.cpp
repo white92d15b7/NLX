@@ -548,26 +548,26 @@ void BitcoinGUI::createToolBars()
 {
     if (walletFrame) {
         QToolBar* toolbar = new QToolBar(tr("Tabs toolbar"));
-        //toolbar->setObjectName("Main-Toolbar"); // Name for CSS addressing
-        //toolbar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+        toolbar->setObjectName("Main-Toolbar"); // Name for CSS addressing
+        toolbar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
         toolbar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
        // Add some empty space at the top of the toolbars
-        //QAction* spacer = new QAction(this);
-        //toolbar->addAction(spacer);
-        //toolbar->widgetForAction(spacer)->setObjectName("ToolbarSpacer");
+        QAction* spacer = new QAction(this);
+        toolbar->addAction(spacer);
+        toolbar->widgetForAction(spacer)->setObjectName("ToolbarSpacer");
 
         toolbar->addAction(overviewAction);
         toolbar->addAction(sendCoinsAction);
         toolbar->addAction(receiveCoinsAction);
-        //toolbar->addAction(privacyAction); hide privacy tab untill zerocoin implementation
+        toolbar->addAction(privacyAction);
         toolbar->addAction(historyAction);
-        //toolbar->addAction(privacyAction); hide privacy tab untill zerocoin implementation
+        toolbar->addAction(privacyAction); 
         QSettings settings;
         if (settings.value("fShowMasternodesTab").toBool()) {
             toolbar->addAction(masternodeAction);
         }
         toolbar->setMovable(false); // remove unused icon in upper left corner
-       //toolbar->setOrientation(Qt::Vertical);
+        toolbar->setOrientation(Qt::Vertical);
         toolbar->setIconSize(QSize(32,32));
         overviewAction->setChecked(true);
 
@@ -717,7 +717,7 @@ void BitcoinGUI::createTrayIconMenu()
     trayIconMenu->addSeparator();
     trayIconMenu->addAction(sendCoinsAction);
     trayIconMenu->addAction(receiveCoinsAction);
-    //trayIconMenu->addAction(privacyAction); hide privacy tab untill zerocoin implementation
+    trayIconMenu->addAction(privacyAction);
     trayIconMenu->addSeparator();
     trayIconMenu->addAction(signMessageAction);
     trayIconMenu->addAction(verifyMessageAction);
