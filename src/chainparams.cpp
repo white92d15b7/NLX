@@ -141,11 +141,15 @@ public:
         assert(genesis.hashMerkleRoot == uint256("0x3bcd33b7d38538c060ba28f02dc983e364bb7b84303b505c216c2c0fb935568e"));
        
         //ipv4
-	vSeeds.push_back(CDNSSeedData("DNSseeder", "170.75.175.246"));   
-       
+	vSeeds.push_back(CDNSSeedData("DNSseeder1", "170.75.175.246"));   
+        vSeeds.push_back(CDNSSeedData("DNSseeder2", "140.82.3.242"));
+	vSeeds.push_back(CDNSSeedData("DNSseeder3", "144.202.102.198"));
+	vSeeds.push_back(CDNSSeedData("DNSseeder4", "167.99.181.218"));
+	vSeeds.push_back(CDNSSeedData("DNSseeder5", "nlx.ccoe.online"));
 	
 	//ipv6
-	vSeeds.push_back(CDNSSeedData("DNSseeder", "2602:ffb6:4:d928:f816:3eff:fe0b:6789"));
+	vSeeds.push_back(CDNSSeedData("DNSseeder6", "2607:9880:1507:fff1:a00:27ff:fe7c:5df5"));
+	vSeeds.push_back(CDNSSeedData("DNSseeder7", "2607:9880:1507:fff1:a00:27ff:fefa:6368"));
         
 
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1, 23);
